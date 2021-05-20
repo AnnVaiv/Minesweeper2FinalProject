@@ -188,8 +188,34 @@ public class Board extends JFrame implements ActionListener {
                         showAllCellContain();
                         youLose();
                     } else
+                        if (cellArray[x][y].getNeighbouringMines()==0){
+                            showSafeField(x, y);
+                        }
                         checkIfWon();
 
+
+                }
+            }
+        }
+
+    }
+
+    private void showSafeField(int x, int y) {
+        //flood fill algorithm
+        for(int i=x-1; i<=x+1; i++){
+            for(int j=y-1; j<=y+1; j++){
+
+                try {
+                    if(!cellArray[i][j].isMine() && /* &&*/ !cellArray[i][j].isRevealed()){
+                        showOneCellContain(i,j);
+                        if (cellArray[i][j].getNeighbouringMines()==0){
+                            showSafeField(i,j);
+
+                        }
+
+                    }
+                                    } catch (Exception e) {
+                    //I dont need lots of errors for not founding cells out of border
 
                 }
             }
