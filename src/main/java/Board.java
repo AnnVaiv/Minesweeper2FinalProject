@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 public class Board extends JFrame implements ActionListener {
     int boardSize = 9;//9
     int mineCount = 10;//10
+    int counterNotMine = boardSize*boardSize-mineCount;
+
     String level="Beginner";
 
     int rows = boardSize;//y;j
@@ -134,13 +136,13 @@ public class Board extends JFrame implements ActionListener {
 
     //-------------USER INTERFACE---------------
 
-    int cellSize = 40;
+    int cellSize = 50;
 
     JFrame frame = new JFrame("Minesweeper");
     JPanel cellPanel;
     JButton[][] cellButtons = new JButton[columns][boardSize];
 
-    Font myFont = new Font("Ink Free", Font.PLAIN, 30);
+    Font myFont = new Font("Arial", Font.PLAIN, 18);
 
     public void userInterface(){
 
@@ -159,6 +161,7 @@ public class Board extends JFrame implements ActionListener {
             for( int y=0 ; y<boardSize ; y++ ) {
 
                 cellButtons[x][y] = new JButton();
+                cellButtons[x][y].setFont(myFont);
                 cellButtons[x][y].setFocusable(false);
                 cellButtons[x][y].setEnabled(true);
                 cellButtons[x][y].addActionListener(this);
@@ -170,9 +173,9 @@ public class Board extends JFrame implements ActionListener {
         frame.add(cellPanel);
         frame.setVisible(true);
 
-
     }
 
+    //-------------METHODS FOR CLICKING, WINNING, LOOSING----
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -180,12 +183,51 @@ public class Board extends JFrame implements ActionListener {
             for( int y=0 ; y<boardSize ; y++ ) {
 
                 if (e.getSource() == cellButtons[x][y]) {
-                    cellButtons[x][y].setText(cellArray[x][y].getContain());
-                    cellButtons[x][y].setEnabled(false);
+                    showOneCellContain(x, y);
+                    if (cellArray[x][y].isMine()){
+                        showAllCellContain();
+                        youLose();
+                    } else
+                        checkIfWon();
+
+
                 }
             }
         }
 
+    }
+
+    private void checkIfWon() {
+
+        if (counterNotMine==0){
+            youWon();
+        }
+        System.out.println(counterNotMine);
+    }
+
+    public void showOneCellContain (int x, int y){
+        cellButtons[x][y].setText(cellArray[x][y].getContain());
+        cellButtons[x][y].setEnabled(false);
+        cellArray[x][y].setRevealed(true);
+        counterNotMine--;
+    }
+    public void showAllCellContain (){
+        for( int x=0 ; x<boardSize ; x++ ) {
+            for( int y=0 ; y<boardSize ; y++ ) {
+                showOneCellContain(x, y);
+            }
+        }
 
     }
+    public void youLose (){
+        JOptionPane.showMessageDialog(frame, "BOOOM!!! \nYou lose!","You lose", JOptionPane.PLAIN_MESSAGE);
+
+    }
+    public void youWon (){
+        JOptionPane.showMessageDialog(frame, "Congratulation!!! \nYou won!","You won", JOptionPane.PLAIN_MESSAGE);
+
+
+    }
+
+
 }

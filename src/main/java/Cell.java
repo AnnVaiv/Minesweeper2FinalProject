@@ -4,10 +4,14 @@ public class Cell {
 
     private String contain;//M - mined; 0-8 - number of neighbouring mines   THIS IS WHAT WILL BE SHOWN TO PLAYER
 
+    private boolean revealed;
+
     public Cell() {
         mine=false;
         neighbouringMines=0;
         contain="";
+        revealed=false;
+
     }
 
 
@@ -36,5 +40,13 @@ public class Cell {
 
     public void setContain(String contain) {
         this.contain = contain;
+    }
+
+    public boolean isRevealed() {
+        return revealed;
+    }
+
+    public void setRevealed(boolean revealed) {
+        this.revealed = revealed;
     }
 }
