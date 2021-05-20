@@ -7,7 +7,7 @@ public class Cell {
     public Cell() {
         mine=false;
         neighbouringMines=0;
-        contain=".";
+        contain="";
     }
 
 
